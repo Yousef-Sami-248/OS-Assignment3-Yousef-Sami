@@ -31,7 +31,20 @@
 
 Document your development process with **minimum 3 entries** showing progression:
 
-### Entry 1 - [Date, Time]
+### Entry 1 - [05/01, 12:00 PM]
+**I started by forking code on my GitHub account using Visual Studio Code I changed the value of the studentID variable to 445050248 and committed it to my GitHub repository.**: 
+
+**Determining the precise shared variables that were creating race conditions in the original program, which were distributed among various functions**: 
+
+**I have gone through all TODOs in SchedulerSimulationSync.java and then matched them with the requirements mentioned in the assignment pdf document.**: 
+
+**un the code first to make sure it will compile and view the "messy" results before adding synchronization**: 
+
+**1 hour**: 
+
+---
+
+### Entry 2 - [05/01, 1:20 PM]
 **What I implemented**: 
 
 **Challenges encountered**: 
@@ -44,7 +57,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 ---
 
-### Entry 2 - [Date, Time]
+### Entry 3 - [05/01, 3:00 PM]
 **What I implemented**: 
 
 **Challenges encountered**: 
@@ -57,7 +70,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 ---
 
-### Entry 3 - [Date, Time]
+### Entry 4 - [05/01, 4:00 PM]
 **What I implemented**: 
 
 **Challenges encountered**: 
@@ -70,20 +83,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 ---
 
-### Entry 4 - [Date, Time]
-**What I implemented**: 
-
-**Challenges encountered**: 
-
-**How I solved it**: 
-
-**Testing approach**: 
-
-**Time spent**: 
-
----
-
-### Entry 5 - [Date, Time]
+### Entry 5 - [05/01, 5:00 PM]
 **What I implemented**: 
 
 **Challenges encountered**: 
