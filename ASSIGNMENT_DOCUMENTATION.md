@@ -45,15 +45,15 @@ Document your development process with **minimum 3 entries** showing progression
 ---
 
 ### Entry 2 - [05/01, 1:20 PM]
-**What I implemented**: 
+**Both Task 1 and Task 2 were achieved by using ReentrantLock in the context switches, finished processes, and wait time counter, as well as for the executionLog list. For each resource, a separate lock was applie=**: 
 
-**Challenges encountered**: 
+**Ensuring that the execution log does not raise a ConcurrentModificationException when several threads attempt to write to it simultaneously.**: 
 
-**How I solved it**: 
+**I put try-finally blocks around all the critical areas, thus making sure that unlock() would be invoked in the finally block to prevent deadlock.**: 
 
-**Testing approach**: 
+**Repeated running of the simulation proved that there was no problem with the log file anymore and the resulting counters were sensible.**: 
 
-**Time spent**: 
+**1.30 hour**: 
 
 ---
 
