@@ -83,7 +83,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 ---
 
-### Entry 5 - [05/01, 7:00 PM]
+### Entry 5 - [05/01, 8:00 PM]
 ****: 
 
 **Final cleanup and push of code to GitHub. In addition, I completed filling out the remaining aspects of documentation and confirmed the repository link**: 
@@ -114,7 +114,9 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - explain your implementation choices]
+[
+The main difference is that a ReentrantLock is used for "ownership" to protect a specific piece of data, whereas a Semaphore is used to control access to a limited resource using permits. In my code, I used ReentrantLock to guard the counters and executionLog, making sure no two threads will access the common resources concurrently. I used Semaphore with one permit to emulate the CPU, allowing only one process to use the processor to execute its process at once.
+]
 
 ---
 
@@ -123,7 +125,7 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - reference try-finally blocks, lock ordering, etc.]
+[Deadlock is described as a scenario whereby two or more threads are stuck in such a way that each of them waits indefinitely for another thread. To avoid this, I ensured that the program used the Lock Ordering approach, which allows all the threads to acquire their locks in a certain order so as to avoid circular waiting. I also used the Try-Finally approach, which involves having the lock.unlock() method inside a finally block. As a result, regardless of the occurrence of exceptions, the locks will still be released. Therefore, other threads will not remain waiting for the release of the lock which will never happen.]
 
 ---
 
@@ -136,7 +138,9 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - explain coarse-grained vs fine-grained locking, independence of counters, concurrency implications. Show understanding of when to use each approach. 5-8 sentences expected.]
+[
+In my solution of task #1, I preferred using separate locks for all three counters (i.e., fine-grained locks). The reason is that these three counters (contextSwitchCount, completedProcesses, and totalWaitingTime) are logically independent and are being incremented at different stages of the simulation process. While using coarse-grained locks would be easier, and avoiding deadlocks would be simpler, such an approach means forcing threads to wait for each other even if the threads have nothing to do with each other (since all the locks will be held by only one object). Using fine-grained locking is slightly harder in terms of implementation but offers much higher levels of concurrency.
+]
 
 ---
 
@@ -144,51 +148,83 @@ Document your development process with **minimum 3 entries** showing progression
 
 ### Critical Section #1: Counter Variables
 
-**Which variables**: 
+**contextSwitchCount, completedProcesses, totalWaitingTime.
 
-**Why they need protection**: 
+**They are shared resources used by several threads; lack of any synchronization leads to race conditions where one thread modifies the value modified by another, resulting in wrong statistics.
+Synchronization strategy employed:
+ReentrantLock (Fine-grained locking).**: 
 
-**Synchronization mechanism used**: 
+**ReentrantLock Fine-grained locking approach**: 
 
 **Code snippet**:
 ```java
-// Paste your implementation here
+// Example of protecting the context switch counter
+contextSwitchLock.lock();
+try {
+    contextSwitchCount++;
+} finally {
+    contextSwitchLock.unlock();
+}
+
+// Example of protecting the completion counters
+waitingTimeLock.lock();
+try {
+    totalWaitingTime += waitingTime;
+    completedProcesses++;
+} finally {
+    waitingTimeLock.unlock();
+}
 ```
 
-**Justification**: 
+**The use of ReentrantLock enables mutual exclusivity such that only one thread can alter the value of the counter at a time. The try-finally structure is employed to make sure that the lock is always released regardless of any exceptions.**: 
 
 ---
 
 ### Critical Section #2: Execution Log
 
-**What resource**: 
+**The executionLog, which is a shared ArrayList<String> used to record process events and state changes chronologically.**: 
 
-**Why it needs protection**: 
+**ArrayList is not thread-safe; therefore, when multiple threads try adding log entries at the same time, this might result in data corruption, loss of messages, or ConcurrentModificationException.**: 
 
-**Synchronization mechanism used**: 
+**ReentrantLock specifically a dedicated lock named logLock**: 
 
 **Code snippet**:
 ```java
-// Paste your implementation here
+
+// Protecting the shared ArrayList from concurrent modification
+logLock.lock();
+try {
+    executionLog.add(logMessage);
+} finally {
+    logLock.unlock();
+}
 ```
 
-**Justification**: 
+**The logLock provides Mutual Exclusion property, ensuring that there is always only one thread able to use the executionLog at any moment in time. This way, all the actions will be logged chronologically and the system will not crash because of accessing the non-thread-safe ArrayList.**: 
 
 ---
 
 ### Critical Section #3: CPU Semaphore
 
-**Purpose of semaphore**: 
+**In order to control access to the CPU as a shared resource by only allowing one process to run at a certain time and hence emulate a single core processing system.**: 
 
-**Number of permits and why**: 
+**Only one permit. The reason for this is that the simulation involves only one CPU core, meaning that only one process (thread) can gain access to the execution section at once.**: 
 
-**Where implemented**: 
+**Within the run() method of the Process class, especially surrounding the part where the process performs its simulation (for example, during the time quantum).**: 
 
 **Code snippet**:
 ```java
-// Paste your implementation here
-```
-
+// // Acquiring the permit before entering the CPU execution phase
+cpuSemaphore.acquire();
+try {
+    // Simulating process execution for a time quantum
+    Thread.sleep(executionTime);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+} finally {
+    // Releasing the permit so another process can use the CPU
+    cpuSemaphore.release();
+}
 **Effect on program behavior**: 
 
 ---
@@ -204,23 +240,33 @@ Document your development process with **minimum 3 entries** showing progression
 ```
 
 **Results**: 
-(Show that running multiple times produces consistent, correct results)
+(Result
+Consistency: Re-running the simulation with the same inputs yielded identical outputs in totalWaitingTime and contextSwitchCount.
+
+Reliability: Race conditions did not happen, and the executionLog was sorted and intact.
+
+Validation: All calculated statistics were correct compared to the manual computation, which means that the synchronization algorithms (Locks and Semaphores) functioned flawlessly
+
+)
 
 **Why synchronization is necessary**: 
-(Explain what race conditions COULD occur without synchronization, even if you didn't observe them. Explain which shared resources need protection and why.)
+(Synchronization is needed to avoid Race Conditions in situations where two threads access a shared resource at the same time. Failure to synchronize results in non-atomic actions such as count++, thus losing updates and making statistics incorrect. Besides, there is also a risk of using shared objects, which are not thread safe – for instance, ArrayList (executionLog), which could lead to data corruption
+)
 
-**Conclusion**: 
+**ReentrantLocks and Semaphores have been used effectively to overcome interference between threads in the simulation. Through mutual exclusion on the use of the counters, log files, and CPU resource, the system ensures that accurate and predictable results will be generated. It has been shown that synchronization is important when developing stable multi-threaded systems**: 
 
 ---
 
 ### Test 2: Exception Testing
-**What I tested**: Checking for ConcurrentModificationException
+**Checking for ConcurrentModificationException**
 
-**Testing procedure**: 
+**I deleted the logLock (which acts as a lock or synchronization), and then I ran the simulation using a lot of processes (for instance, 50 processes) that were trying to access the executionLog at the same time**: 
 
-**Results**: 
+**Without Locking: The application threw an error of java.util.ConcurrentModificationException within a few seconds.
 
-**What this proves**: 
+With Locking: The application executed successfully without any exceptions, despite high process loads**: 
+
+**This verifies the fact that the ArrayList is not thread-safe, and thus our synchronization mechanism (ReentrantLock) becomes indispensable to ensure race condition-free and stable operation of the system.**: 
 
 ---
 
