@@ -99,15 +99,14 @@ Document your development process with **minimum 3 entries** showing progression
 ## Part 2: Technical Questions (1 mark)
 
 ### Question 1: Race Conditions
-**Q**: Identify and explain TWO race conditions in the original code. For each:
+****: Identify and explain TWO race conditions in the original code. For each:
 - What shared resource is affected?
 - Why is concurrent access a problem?
 - What incorrect behavior could occur?
 
 **Your Answer**:
 
-[Your answer here - 4-6 sentences with code examples]
-
+[Race condition in the original code is present in shared variables such as contextSwitchCount. When there is an attempt by various threads to perform the operation contextSwitchCount++, it will produce an erroneous result since all of them will fetch the same value from memory simultaneously. In the case of executionLog, which is an ArrayList, race condition occurs due to its non-threadsafe nature when there is a call made to executionLog.add(message) from multiple threads. I solved both of these problems by utilizing ReentrantLock for counters and logLock for the list.]
 ---
 
 ### Question 2: Locks vs Semaphores
