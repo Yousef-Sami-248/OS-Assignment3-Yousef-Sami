@@ -58,33 +58,33 @@ Document your development process with **minimum 3 entries** showing progression
 ---
 
 ### Entry 3 - [05/01, 3:00 PM]
-**What I implemented**: 
+**During this phase, I incorporated Task 3 into the code by implementing a Binary Semaphore that controls access to the CPU. The semaphore was initialized with just one permit to replicate a uniprocessor environment where only one thread can be executed at once. I also took some time to improve the runToCompletion() method to meet the same synchronization **: 
 
-**Challenges encountered**: 
+**The problem was ensuring that the permit for the semaphore was correctly released when a process completed or yielded, otherwise the next process in the queue would remain indefinitely blocked**: 
 
-**How I solved it**: 
+**I followed the logic in the calls to cpuSemaphore.acquire() and cpuSemaphore.release(), making sure they encompassed the whole process execution quantum**: 
 
-**Testing approach**: 
+**To determine consistency, I ran a total of 5 consecutive simulations of the complete system and compared the output "Average Waiting Time" and "Total Context Switches" for each run to verify that the results were consistent and made sense.**: 
 
-**Time spent**: 
+**45 min **: 
 
 ---
 
 ### Entry 4 - [05/01, 4:00 PM]
-**What I implemented**: 
+**The documentation for the ASSIGNMENT_DOCUMENTATION.md file was my main concern. In this regard, I answered the technical questions related to race conditions, deadlock avoidance, and explained why I went with the fine-grained approach as opposed to the coarse lock approach. I included the critical sections' code as per the assignment requirements.**: 
 
-**Challenges encountered**: 
+**Describing what sets the shared resources apart and discussing why the semaphore is needed in the CPU despite locks being available**: 
 
-**How I solved it**: 
+**I revisited the synchronization theory in the README.md file and related it to my particular implementation to ensure that I give clear answers**: 
 
-**Testing approach**: 
+**I made sure that all the code fragments in the documentation were exactly the same as the final code I wrote**: 
 
-**Time spent**: 
+**45 min**: 
 
 ---
 
-### Entry 5 - [05/01, 5:00 PM]
-**What I implemented**: 
+### Entry 5 - [05/01, 7:00 PM]
+****: 
 
 **Challenges encountered**: 
 
