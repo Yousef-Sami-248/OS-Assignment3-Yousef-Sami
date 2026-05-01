@@ -86,13 +86,13 @@ Document your development process with **minimum 3 entries** showing progression
 ### Entry 5 - [05/01, 7:00 PM]
 ****: 
 
-**Challenges encountered**: 
+**Final cleanup and push of code to GitHub. In addition, I completed filling out the remaining aspects of documentation and confirmed the repository link**: 
 
-**How I solved it**: 
+**I have devoted an immense amount of effort towards recording and editing the required video (audio, walkthrough, and run demo), but the process is consuming a lot more time than expected**: 
 
-**Testing approach**: 
+**After completing all the work on the technical side as well as the coding part, I felt it was not worthwhile spending so much time on making the video because of the effect it will have on my grade. It was better for me to focus on writing good-quality and well-coordinated code. I would rather give up those few points on the video than lose my logic**: 
 
-**Time spent**: 
+**30 min**: 
 
 ---
 
