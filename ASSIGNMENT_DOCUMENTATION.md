@@ -332,30 +332,32 @@ While you keep the pen, everybody should wait for their turn]
 
 ## Part 6: GitHub Repository Information
 
-**Repository URL**: 
+**[Repository URL](https://github.com/Yousef-Sami-248/OS-Assignment3-Yousef-Sami/tree/main)**: 
 
 **Number of commits**: 
 
 **Commit messages**: 
-1. 
-2. 
-3. 
-4. 
+1. Initial: Project setup and basic structure.
+2. Logic: Implemented core scheduling logic.
+3. Sync: Added Locks and Semaphores for protection.
+4. Final: Code cleanup and results verification.
 
 ---
 
 ## Summary
 
-**Total time spent on assignment**: 
+**Approximately 6–8 hours**: 
 
 **Key takeaways**: 
-1. 
-2. 
-3. 
+1. It is necessary to synchronize in order to avoid data corruption in multi-threaded systems.
 
-**Most challenging aspect**: 
+2. ReentrantLock synchronizes shared variables.
 
-**What I'm most proud of**: 
+3. Semaphores synchronize access to scarce hardware resources such as CPUs.
+
+**Recognizing all "critical sections" where overlapping happened and fixing the exception that was caused when several threads were trying to write to the log.**: 
+
+**Constructing an efficient and thread-safe simulation model that guarantees to deliver 100% accurate results irrespective of the number of processes used or the size of the time quantum.**: 
 
 ---
 
