@@ -258,9 +258,8 @@ Validation: All calculated statistics were correct compared to the manual comput
 ---
 
 ### Test 2: Exception Testing
-**Checking for ConcurrentModificationException**
 
-**I deleted the logLock (which acts as a lock or synchronization), and then I ran the simulation using a lot of processes (for instance, 50 processes) that were trying to access the executionLog at the same time**: 
+**I deleted the logLock (which acts as a lock or synchronization), and then I ran the simulation using a lot of processes (for instance, 50 processes) that were trying to access the executionLog at the same time**: Checking for ConcurrentModificationException
 
 **Without Locking: The application threw an error of java.util.ConcurrentModificationException within a few seconds.
 
@@ -271,24 +270,30 @@ With Locking: The application executed successfully without any exceptions, desp
 ---
 
 ### Test 3: Correctness Verification
-**What I tested**: Verifying correct final values (total burst time, context switches, etc.)
+**: Verifying correct final values**: Verifying correct final values (total burst time, context switches, etc.)
 
-**Expected values**: 
+**Total Burst Time: It should be equal to the sum of all burst times allocated to the processes.
 
-**Actual values**: 
+Context Switches: It should be equal to the number of times the CPU was relinquished (Quantum exhausted + process completion).
 
-**Analysis**: 
+Completed Processes: It should be equal to the number of processes initially generated.**: 
+
+**All values were consistent between what was recorded and what was calculated by hand. For instance, in cases where 5 processes had bursts of 10ms each, the Total Burst Time was precisely 50ms, while contextSwitchCount was incremented only when valid state changes occurred.**: 
+
+**Results indicate that we have 100% correctness of our counters. This clearly indicates that the synchronization approach implemented by us using the ReentrantLock for the contextSwitchCount and other counters works perfectly well without any increment "lost" because of the concurrent modification by multiple threads.**: 
 
 ---
 
 ### Test 4: Different Scenarios
-**Scenario tested**: [e.g., different time quantum, more processes, etc.]
+**Testing the simulation with a Very Small Time Quantum (e.g., 1ms) versus a Large Time Quantum (e.g., 100ms).**: [e.g., different time quantum, more processes, etc.]
 
-**Purpose**: 
+**To test the functionality of the synchronization mechanisms as well as how the scheduler manages frequent thread switching and to make sure that the logic does not break down under the stress of being used frequently.**: 
 
-**Results**: 
+**Small Quantum: The contextSwitchCount value became very high as anticipated, but the counters did not become erroneous, and all the logs remained completely orderly.
 
-**What I learned**: 
+Large Quantum: The number of context switches reduced, and the whole system resembled FCFS scheduling. All the synchronization locks were working properly.**: 
+
+**First, I have realized that Time Quantum directly impacts the overhead incurred by the system (many context switches occur). Second, I have been able to confirm that the synchronizing mechanism that I designed is solid and does not matter if many or few context switches occur because there will be no race conditions or deadlocks.**: 
 
 ---
 
@@ -296,7 +301,8 @@ With Locking: The application executed successfully without any exceptions, desp
 
 ### What I learned about synchronization:
 
-[6-8 sentences about key concepts, challenges, insights]
+[I have found out that synchronization is not only about locking code but also making sure that there is consistency in the data when multiple programs are running at once. This task revealed to me that an operation like count++ could be problematic without any locks since it is not atomic; it involves reading, writing, and modifying operations. What proved to be the most difficult part was finding out what areas were sensitive and needed synchronization, namely the common execution log and the global counters. In addition, I understood the distinction between ReentrantLocks, which lock down the variables exclusively, and Semaphores, which are the best approach to limiting a resource like CPU usage. It became clear that while synchronization is important, it should be done carefully to prevent deadlock situations
+]
 
 ---
 
@@ -304,15 +310,23 @@ With Locking: The application executed successfully without any exceptions, desp
 
 Give TWO examples where synchronization is critical:
 
-**Example 1**: 
+**Multiplayer Video Games (Loot Boxes/Drops)
+In an online video game such as Fortnite or Ludo Star, synchronization becomes a necessity where two players try to access the same item simultaneously, at precisely the same millisecond. If this doesn't happen, then there is a possibility that either the same unique item will be given to both players by the server, or even a complete failure on its part. This is done by using the Lock, which assigns it to one player only, making it inaccessible to**: 
 
-**Example 2**: 
+**Synchronization will be needed by the game for the calculation of the damages when two players attack the monster at the same time during a boss fight. Without using any kind of synchronization mechanism, both of these attacks will be treated as simultaneous attacks, which means they would read the “initial hp” of the monster at the same time and save the final hp of the monster only considering one attack**: 
 
 ---
 
 ### How I would explain synchronization to others:
 
-[Explain to someone who just finished Assignment 1 - use simple terms and analogies]
+[Synchronization explanation to others:
+Consider the case where you and all your friends use only one notebook as the shared resource. Suppose all of you write in the notebook at once. This will result in overlapping handwriting, making the data corrupted; this is called a race condition.
+
+Synchronization is nothing but the "One Pen" policy:
+
+Before writing in the notebook, you need to pick up the pen (lock).
+
+While you keep the pen, everybody should wait for their turn]
 
 ---
 
